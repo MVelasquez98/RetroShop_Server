@@ -1,3 +1,5 @@
+using Microsoft.EntityFrameworkCore;
+using RetroShop_Server.Repository;
 using RetroShop_Server.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -7,6 +9,9 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddGrpc();
+string connectionString = builder.Configuration.GetConnectionString("Database");
+builder.Services.AddDbContext<UserContext>
+    (x => x.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
 
 var app = builder.Build();
 
