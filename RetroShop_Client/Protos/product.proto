@@ -1,0 +1,66 @@
+syntax = "proto3";
+
+option csharp_namespace = "RetroShop_Client.Protos";
+
+package product;
+
+service ProductoService {
+    rpc addProducto(ProductoDTO) returns (ResProductoDTO);
+    rpc getByFilter(ProductoFilterDTO) returns (ProductosDTO);
+    rpc getAllProductos(Empty) returns (ProductosDTO);
+    rpc getAllCategorias(Empty) returns (CategoriasDTO);
+}
+
+message Empty {}
+
+message ServerResponse2{
+    int32 cod=1;
+    string msg=2;
+}
+
+message FotoDTO {
+    int32 idFoto = 1;
+	string nombre = 2;
+	string file = 3;
+}
+
+message ProductoDTO{
+    int32 idProducto=1;
+    string nombre =2;
+    string descripcion =3;
+    double precio=4;
+    int32 cantidadDisponible=5;
+    string fechaFabricacion=6;
+	repeated FotoDTO fotos =7;
+	int32 idCategoria = 8;
+	int32 idUsuario = 9;
+}
+
+message ResProductoDTO{
+    ProductoDTO producto = 1;
+    ServerResponse2 response = 2;
+}
+
+message ProductoFilterDTO{
+    int32 categoria=1;
+	string nombreLike=2;
+	double precioDesde=3;
+	double precioHasta=4;
+	string fechaDesde=5;
+	string fechaHasta=6;
+}
+
+message ProductosDTO{
+    repeated ProductoDTO productos=1;
+    ServerResponse2 response = 2;
+}
+
+message CategoriaDTO{
+    int32 idCategoria=1;
+	string categoria=2;
+}
+
+message CategoriasDTO{
+    repeated CategoriaDTO categorias=1;
+    ServerResponse2 response = 2;
+}
