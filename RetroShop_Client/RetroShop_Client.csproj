@@ -7,8 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Protos\product.proto" />
-    <None Remove="Protos\user.proto" />
+    <None Remove="Protos\Producto.proto" />
+    <None Remove="Protos\Transaccion.proto" />
+    <None Remove="Protos\Usuario.proto" />
   </ItemGroup>
 
   <ItemGroup>
@@ -26,10 +27,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Protobuf Include="Protos\product.proto" GrpcServices="Client" />
-    <Protobuf Include="Protos\user.proto">
-      <GrpcServices>Client</GrpcServices>
-    </Protobuf>
+    <Protobuf Include="Protos\Producto.proto" GrpcServices="Client" />
+    <Protobuf Include="Protos\Transaccion.proto" GrpcServices="Client" />
+    <Protobuf Include="Protos\Usuario.proto" GrpcServices="Client" />
   </ItemGroup>
 
 </Project>

@@ -1,6 +1,10 @@
 ﻿using Grpc.Net.Client;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
+using RetroShop_Client.Model.Config;
 using RetroShop_Client.Protos;
+using System;
+using System.Diagnostics.Eventing.Reader;
 
 namespace RetroShop_Client.Controllers
 {
@@ -8,12 +12,31 @@ namespace RetroShop_Client.Controllers
     [ApiController]
     public class ProductController : ControllerBase
     {
-        private readonly string GrpcChannelURL = "https://localhost:7110";
+        #region fields
+        private readonly IOptions<ApiConfig> _config;
+        private ProductoService.ProductoServiceClient _service;
+        #endregion
+
+        #region constructor
+        public ProductController(IOptions<ApiConfig> config)
+        {
+            _config = config;
+            using var channel = GrpcChannel.ForAddress(_config.Value.GrpcChannelURL);
+            _service = new ProductoService.ProductoServiceClient(channel);
+        }
+        #endregion
+
         #region mocks
         private List<ProductoDTO> _products = new List<ProductoDTO>();
-        //private readonly ServerResponse serverResponseOk = new ResProductoDTO()
-        //{
-        //};
+        private readonly ProductoServerResponse serverResponseOk = new ProductoServerResponse()
+        {
+            Cod = 200,
+            Msg = "Ok"
+        };
+        private readonly ResProductoDTO resProductoDTO = new ResProductoDTO()
+        {
+            Producto = new ProductoDTO() { Nombre = "Mesa", }
+        };
         private readonly List<CategoriaDTO> _categorias = new List<CategoriaDTO>()
         {
             new CategoriaDTO() { IdCategoria=1, Categoria="Vintage" }
@@ -27,36 +50,65 @@ namespace RetroShop_Client.Controllers
         {
             try
             {
-                //using var channel = GrpcChannel.ForAddress(GrpcChannelURL);
-                //var client = new ProductoService.ProductoServiceClient(channel);
-                //var response = client.Post(producto);
-                _products.Add(producto);
-                return Ok();
+                var response = await _service.addProductoAsync(producto);
+                return Ok(response.Producto);
             }
             catch (Exception ex)
             {
-                return BadRequest();
-                //return BadRequest(new ResProductoDTO() { Producto = null, Response = new ServerResponse() { Code = 400, Msg = "Error" } });
+                Console.WriteLine(ex.ToString());
+                return StatusCode(500);
             }
         }
 
-        // PUT api/<ProductController>/5
-        [HttpPut("{idProducto}")]
-        public void Put(int idProducto, [FromBody] ProductoDTO producto)
-        {
-        }
         //GET api/<ProductController>/
         [HttpGet]
+        [Route("byfilter")]
         public async Task<ActionResult> GetByFilter([FromBody] ProductoFilterDTO productoFilter)
         {
-            return Ok(_products);
+            try
+            {
+                var response = await _service.getByFilterAsync(productoFilter);
+                if (response.Productos.Count == 0) return NoContent();
+                return Ok(response.Productos);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                return StatusCode(500);
+            }
         }
+        [HttpGet]
+        public async Task<ActionResult> GetAllProductos()
+        {
+            try
+            {
+                var response = await _service.getAllProductosAsync(new Empty());//ese empty rari
+                if (response.Productos.Count == 0) return NoContent();
+                return Ok(response.Productos);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                return StatusCode(500);
+            }
+        }
+
         //GET api/<ProductController>/
         [HttpGet]
         [Route("categoria")]
         public async Task<ActionResult> GetAllCategorias()
         {
-            return Ok(_categorias);
+            try
+            {
+                var response = await _service.getAllCategoriasAsync(new Empty());//ese empty rari
+                if (response.Categorias.Count == 0) return NoContent();
+                return Ok(response.Categorias);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                return StatusCode(500);
+            }
         }
         #endregion
     }

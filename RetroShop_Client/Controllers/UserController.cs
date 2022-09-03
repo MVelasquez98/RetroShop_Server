@@ -10,8 +10,20 @@ namespace RetroShop_Client.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
+        #region fields
         private readonly IOptions<ApiConfig> _config;
         private UsuarioService.UsuarioServiceClient _service;
+        #endregion
+
+        #region constructor
+        public UserController(IOptions<ApiConfig> config)
+        {
+            _config = config;
+            using var channel = GrpcChannel.ForAddress(_config.Value.GrpcChannelURL);
+            _service = new UsuarioService.UsuarioServiceClient(channel);
+        }
+        #endregion
+
         #region mocks
         private List<UsuarioDTO> _usuarios = new List<UsuarioDTO>();
         private readonly UsuarioDTO usuarioResponse = new UsuarioDTO()
@@ -22,17 +34,7 @@ namespace RetroShop_Client.Controllers
             Email = "matiasvelasquez840@gmail.com",
             Clave = "pass"
         };
-
-        public UserController(IOptions<ApiConfig> config)
-        {
-            _config = config;
-            using var channel = GrpcChannel.ForAddress(_config.Value.GrpcChannelURL);
-            _service = new UsuarioService.UsuarioServiceClient(channel);
-        }
-
-
         #endregion
-
 
         #region endpoints
         // POST api/<UserController>
@@ -41,22 +43,64 @@ namespace RetroShop_Client.Controllers
         {
             try
             {
-                //var response = _service.addUsuario(usuario);
-                _usuarios.Add(usuario);
-                return Ok(_usuarios.Count);
+                var response = await _service.addUsuarioAsync(usuario);
+                return Ok(response);
             }
             catch (Exception ex)
             {
-                return BadRequest(ex);
+                Console.WriteLine(ex.ToString());
+                return StatusCode(500);
             }
         }
         //GET
         [HttpGet]
-        [Route("login")] public async Task<ActionResult> Login([FromBody] GetByUsuarioYClaveRequest usuarioLogin)
+        [Route("login")]
+        public async Task<ActionResult> Login([FromBody] GetByUsuarioYClaveRequest usuarioLogin)
         {
-            
-            //var response = _service.getByUsuarioYClaveRequest(usuarioLogin);
-            return Ok(usuarioResponse);
+            try
+            {
+                var response = await _service.getByUsuarioYClaveRequestAsync(usuarioLogin);
+                if (response.Usuario == null) return NotFound();
+                return Ok(response);
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                return StatusCode(500);
+            }
+        }
+        // PUT api/<UserController>
+        [HttpPut]
+        [Route("saldo")]
+        public async Task<ActionResult> CargarSaldo([FromBody] UpdateUsuarioCargaSaldoRequest usuario)
+        {
+            try
+            {
+                var response = await _service.updateUsuarioCargaSaldoRequestAsync(usuario);
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                return StatusCode(500);
+            }
+        }
+
+        // PUT api/<UserController>
+        [HttpPut]
+        [Route("comprar")]
+        public async Task<ActionResult> ComprarProducto([FromBody] UpdateUsuarioCompraProductoRequest usuario)
+        {
+            try
+            {
+                var response = await _service.updateUsuarioCompraProductoRequestAsync(usuario);
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                return StatusCode(500);
+            }
         }
         #endregion
     }

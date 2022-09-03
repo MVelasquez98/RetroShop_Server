@@ -2,15 +2,18 @@ syntax = "proto3";
 
 option csharp_namespace = "RetroShop_Client.Protos";
 
-package user;
+package Usuario;
 
 /* METODOS PARA CONSUMIR */
 service UsuarioService{
-	rpc addUsuario (UsuarioDTO) returns (ServerResponse);
+	rpc addUsuario (UsuarioDTO) returns (UsuarioServerResponse);
 	rpc getByUsuarioYClaveRequest (GetByUsuarioYClaveRequest) returns (UsuarioObjDTO);
 	rpc updateUsuarioCargaSaldoRequest (UpdateUsuarioCargaSaldoRequest) returns (UsuarioObjDTO);
 	rpc updateUsuarioCompraProductoRequest (UpdateUsuarioCompraProductoRequest) returns (UsuarioObjDTO);
 }
+
+
+
 /* MODELO */
 message UsuarioDTO{
 	int32 idUsuario = 1;
@@ -23,11 +26,9 @@ message UsuarioDTO{
 	double saldoBilletera = 8;
 }
 
-/* RESPUESTA */
-message ServerResponse{
-	int32 code = 1;
-	string msg = 2;
-}
+
+
+/* REQUEST */
 
 /* RECIBE PEDIDO DE USUARIO CON NOMBRE DE USUARIO Y CLAVE */
 message GetByUsuarioYClaveRequest{
@@ -47,14 +48,20 @@ message UpdateUsuarioCompraProductoRequest{
 	int32 idProducto = 2;
 }
 
+
+/* RESPUESTA */
+message UsuarioServerResponse{
+	int32 code = 1;
+	string msg = 2;
+}
 /* DEVUELVE USUARIO */
 message UsuarioObjDTO{
 	UsuarioDTO usuario = 1;
-	ServerResponse response = 2;
+	UsuarioServerResponse serverResponse = 2;
 }
 
 /* DEVUELVE LISTA DE USUARIOS */
 message ListUsuarioDTO{
 	repeated UsuarioDTO usuarios = 1;
-	ServerResponse response = 2;
+	UsuarioServerResponse serverResponse = 2;
 }

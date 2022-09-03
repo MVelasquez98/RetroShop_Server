@@ -1,0 +1,48 @@
+syntax = "proto3";
+
+option csharp_namespace = "RetroShop_Client.Protos";
+
+package Transaccion;
+
+/* METODOS PARA CONSUMIR */
+service TransaccionService{
+	rpc addTransaccion (TransaccionDTO) returns (ResTransaccionDTO);
+rpc getComprasOVentasByUsuarioRequest (GetTransaccionesRequest) returns (LisTransaccionDTO);
+}
+
+/* MODELO */
+message TransaccionDTO{
+	int32 idTransaccion = 1;
+	int32 idProducto = 2;
+	int32 idComprador = 3;
+	int32 idVendedor = 4;
+	string nombre = 5;
+	int32 cantidad = 6;
+	double precio = 7;
+}
+
+/* REQUESTS */
+message GetTransaccionesRequest{
+	int32 idUsuario = 1;
+	string tipoUsuario = 2;
+}
+
+
+/* RESPONSES */
+message TransaccionServerResponse{
+	int32 cod = 1;
+	string msg = 2;
+}
+message ResTransaccionDTO {
+    int32 idProducto = 1;
+    int32 idComprador = 2;
+    int32 cantidadRestante = 3;
+    double saldoRestante = 4;
+    TransaccionServerResponse serverResponse = 5;
+}
+/* DEVUELVE LISTA DE TRANSACCIONES POR USUARIO */
+message LisTransaccionDTO{
+	repeated TransaccionDTO transacciones = 1;
+	TransaccionServerResponse serverResponse = 2;
+}
+
