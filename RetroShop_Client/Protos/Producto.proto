@@ -1,8 +1,6 @@
 syntax = "proto3";
 
-option csharp_namespace = "RetroShop_Client.Protos";
-
-package Producto;
+option java_package = "grpc";
 
 service ProductoService {
     rpc addProducto(ProductoDTO) returns (ResProductoDTO);
@@ -10,6 +8,8 @@ service ProductoService {
     rpc getAllProductos(Empty) returns (ProductosDTO);
     rpc getAllCategorias(Empty) returns (CategoriasDTO);
 }
+
+
 
 /* MAPEO DE ENTIDADES*/
 message FotoDTO {
@@ -34,10 +34,11 @@ message CategoriaDTO{
 	string categoria=2;
 }
 
+
+
 /* REQUESTS*/
 message Empty {
 }
-
 message ProductoFilterDTO{
     int32 categoria=1;
 	string nombreLike=2;
@@ -54,17 +55,14 @@ message ProductoServerResponse{
     int32 cod=1;
     string msg=2;
 }
-
 message ResProductoDTO{
     ProductoDTO producto = 1;
     ProductoServerResponse serverResponse = 2;
 }
-
 message ProductosDTO{
     repeated ProductoDTO productos=1;
     ProductoServerResponse serverResponse = 2;
 }
-
 message CategoriasDTO{
     repeated CategoriaDTO categorias=1;
     ProductoServerResponse serverResponse = 2;

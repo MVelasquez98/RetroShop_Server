@@ -1,14 +1,15 @@
 syntax = "proto3";
 
-option csharp_namespace = "RetroShop_Client.Protos";
+option java_package = "grpc";
 
-package Transaccion;
 
 /* METODOS PARA CONSUMIR */
 service TransaccionService{
 	rpc addTransaccion (TransaccionDTO) returns (ResTransaccionDTO);
 rpc getComprasOVentasByUsuarioRequest (GetTransaccionesRequest) returns (LisTransaccionDTO);
 }
+
+
 
 /* MODELO */
 message TransaccionDTO{
@@ -45,4 +46,5 @@ message LisTransaccionDTO{
 	repeated TransaccionDTO transacciones = 1;
 	TransaccionServerResponse serverResponse = 2;
 }
+
 

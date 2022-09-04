@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using RetroShop_Client.Model.Config;
-using RetroShop_Client.Protos;
 using System;
 using System.Diagnostics.Eventing.Reader;
 
@@ -21,26 +20,10 @@ namespace RetroShop_Client.Controllers
         public ProductController(IOptions<ApiConfig> config)
         {
             _config = config;
-            using var channel = GrpcChannel.ForAddress(_config.Value.GrpcChannelURLProducto);
+            AppContext.SetSwitch("System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport", true);
+            GrpcChannel channel = GrpcChannel.ForAddress(_config.Value.GrpcChannelURLProducto);
             _service = new ProductoService.ProductoServiceClient(channel);
         }
-        #endregion
-
-        #region mocks
-        private List<ProductoDTO> _products = new List<ProductoDTO>();
-        private readonly ProductoServerResponse serverResponseOk = new ProductoServerResponse()
-        {
-            Cod = 200,
-            Msg = "Ok"
-        };
-        private readonly ResProductoDTO resProductoDTO = new ResProductoDTO()
-        {
-            Producto = new ProductoDTO() { Nombre = "Mesa", }
-        };
-        private readonly List<CategoriaDTO> _categorias = new List<CategoriaDTO>()
-        {
-            new CategoriaDTO() { IdCategoria=1, Categoria="Vintage" }
-        };
         #endregion
 
         #region endpoints

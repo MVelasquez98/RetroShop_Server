@@ -1,18 +1,14 @@
 syntax = "proto3";
 
-option csharp_namespace = "RetroShop_Client.Protos";
-
-package Usuario;
+option java_package = "grpc";
 
 /* METODOS PARA CONSUMIR */
 service UsuarioService{
-	rpc addUsuario (UsuarioDTO) returns (UsuarioServerResponse);
+	rpc addUsuario (UsuarioDTO) returns (UsuarioObjDTO);
 	rpc getByUsuarioYClaveRequest (GetByUsuarioYClaveRequest) returns (UsuarioObjDTO);
 	rpc updateUsuarioCargaSaldoRequest (UpdateUsuarioCargaSaldoRequest) returns (UsuarioObjDTO);
 	rpc updateUsuarioCompraProductoRequest (UpdateUsuarioCompraProductoRequest) returns (UsuarioObjDTO);
 }
-
-
 
 /* MODELO */
 message UsuarioDTO{
@@ -26,9 +22,9 @@ message UsuarioDTO{
 	double saldoBilletera = 8;
 }
 
-
-
 /* REQUEST */
+
+
 
 /* RECIBE PEDIDO DE USUARIO CON NOMBRE DE USUARIO Y CLAVE */
 message GetByUsuarioYClaveRequest{

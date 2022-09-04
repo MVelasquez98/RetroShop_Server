@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using RetroShop_Client.Model.Config;
-using RetroShop_Client.Protos;
 
 namespace RetroShop_Client.Controllers
 {
@@ -19,7 +18,7 @@ namespace RetroShop_Client.Controllers
         public WalletController(IOptions<ApiConfig> config)
         {
             _config = config;
-            using var channel = GrpcChannel.ForAddress(_config.Value.GrpcChannelURLTransaccion);
+            GrpcChannel channel = GrpcChannel.ForAddress(_config.Value.GrpcChannelURLTransaccion);
             _service = new TransaccionService.TransaccionServiceClient(channel);
         }
         #endregion
