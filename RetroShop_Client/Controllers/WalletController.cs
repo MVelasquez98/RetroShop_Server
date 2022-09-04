@@ -19,7 +19,7 @@ namespace RetroShop_Client.Controllers
         public WalletController(IOptions<ApiConfig> config)
         {
             _config = config;
-            using var channel = GrpcChannel.ForAddress(_config.Value.GrpcChannelURL);
+            using var channel = GrpcChannel.ForAddress(_config.Value.GrpcChannelURLTransaccion);
             _service = new TransaccionService.TransaccionServiceClient(channel);
         }
         #endregion

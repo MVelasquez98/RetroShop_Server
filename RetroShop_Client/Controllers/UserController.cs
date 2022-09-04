@@ -19,7 +19,7 @@ namespace RetroShop_Client.Controllers
         public UserController(IOptions<ApiConfig> config)
         {
             _config = config;
-            using var channel = GrpcChannel.ForAddress(_config.Value.GrpcChannelURL);
+            using var channel = GrpcChannel.ForAddress(_config.Value.GrpcChannelURLUsuario);
             _service = new UsuarioService.UsuarioServiceClient(channel);
         }
         #endregion

@@ -21,7 +21,7 @@ namespace RetroShop_Client.Controllers
         public ProductController(IOptions<ApiConfig> config)
         {
             _config = config;
-            using var channel = GrpcChannel.ForAddress(_config.Value.GrpcChannelURL);
+            using var channel = GrpcChannel.ForAddress(_config.Value.GrpcChannelURLProducto);
             _service = new ProductoService.ProductoServiceClient(channel);
         }
         #endregion
