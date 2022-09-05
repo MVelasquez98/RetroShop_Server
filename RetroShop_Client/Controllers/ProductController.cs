@@ -45,7 +45,7 @@ namespace RetroShop_Client.Controllers
 
         //GET api/<ProductController>/
         [HttpGet]
-        [Route("byfilter")]
+        [Route("byFilter")]
         public async Task<ActionResult> GetByFilter([FromBody] ProductoFilterDTO productoFilter)
         {
             try
@@ -66,6 +66,22 @@ namespace RetroShop_Client.Controllers
             try
             {
                 var response = await _service.getAllProductosAsync(new Empty());//ese empty rari
+                if (response.Productos.Count == 0) return NoContent();
+                return Ok(response.Productos);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                return StatusCode(500);
+            }
+        }
+        [HttpGet]
+        [Route("byUser")]
+        public async Task<ActionResult> GetByUsuario(IdUsuarioDTO idUsuario)
+        {
+            try
+            {
+                var response = await _service.getAllProductosByUserAsync(idUsuario);
                 if (response.Productos.Count == 0) return NoContent();
                 return Ok(response.Productos);
             }

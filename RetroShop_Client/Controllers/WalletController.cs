@@ -27,7 +27,7 @@ namespace RetroShop_Client.Controllers
 
         // POST api/<WalletController>
         [HttpPost]
-        [Route("transaccion")]
+        [Route("compra")]
         public async Task<ActionResult> Post([FromBody] TransaccionDTO transaccion)
         {
             try
@@ -50,7 +50,7 @@ namespace RetroShop_Client.Controllers
             try
             {
                 var response = await _service.getComprasOVentasByUsuarioRequestAsync(transaccion);
-                return Ok(response);
+                return Ok(response.Transacciones);
             }
             catch (Exception ex)
             {

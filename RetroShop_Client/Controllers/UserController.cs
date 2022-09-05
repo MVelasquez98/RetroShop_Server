@@ -23,18 +23,6 @@ namespace RetroShop_Client.Controllers
         }
         #endregion
 
-        #region mocks
-        private List<UsuarioDTO> _usuarios = new List<UsuarioDTO>();
-        private readonly UsuarioDTO usuarioResponse = new UsuarioDTO()
-        {
-            Apellido = "Velasquez",
-            Nombre = "Matias",
-            Dni = "41716615",
-            Email = "matiasvelasquez840@gmail.com",
-            Clave = "pass"
-        };
-        #endregion
-
         #region endpoints
         // POST api/<UserController>
         [HttpPost]
@@ -60,7 +48,7 @@ namespace RetroShop_Client.Controllers
             {
                 var response = await _service.getByUsuarioYClaveRequestAsync(usuarioLogin);
                 if (response.Usuario == null) return NotFound();
-                return Ok(response);
+                return Ok(response.Usuario);
             }
             catch(Exception ex)
             {
@@ -76,7 +64,7 @@ namespace RetroShop_Client.Controllers
             try
             {
                 var response = await _service.updateUsuarioCargaSaldoRequestAsync(usuario);
-                return Ok(response);
+                return Ok(response.Usuario);
             }
             catch (Exception ex)
             {
@@ -93,7 +81,7 @@ namespace RetroShop_Client.Controllers
             try
             {
                 var response = await _service.updateUsuarioCompraProductoRequestAsync(usuario);
-                return Ok(response);
+                return Ok(response.Usuario);
             }
             catch (Exception ex)
             {

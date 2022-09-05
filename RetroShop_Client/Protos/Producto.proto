@@ -6,6 +6,7 @@ service ProductoService {
     rpc addProducto(ProductoDTO) returns (ResProductoDTO);
     rpc getByFilter(ProductoFilterDTO) returns (ProductosDTO);
     rpc getAllProductos(Empty) returns (ProductosDTO);
+    rpc getAllProductosByUser(IdUsuarioDTO) returns (ProductosDTO);
     rpc getAllCategorias(Empty) returns (CategoriasDTO);
 }
 
@@ -38,6 +39,10 @@ message CategoriaDTO{
 
 /* REQUESTS*/
 message Empty {
+}
+
+message IdUsuarioDTO{
+    int32 idUsuario = 1;
 }
 message ProductoFilterDTO{
     int32 categoria=1;
