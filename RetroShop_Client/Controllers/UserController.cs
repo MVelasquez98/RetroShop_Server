@@ -40,7 +40,7 @@ namespace RetroShop_Client.Controllers
             }
         }
         //GET
-        [HttpGet]
+        [HttpPost]
         [Route("login")]
         public async Task<ActionResult> Login([FromBody] GetByUsuarioYClaveRequest usuarioLogin)
         {

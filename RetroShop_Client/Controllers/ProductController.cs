@@ -44,7 +44,7 @@ namespace RetroShop_Client.Controllers
         }
 
         //GET api/<ProductController>/
-        [HttpGet]
+        [HttpPost]
         [Route("byFilter")]
         public async Task<ActionResult> GetByFilter([FromBody] ProductoFilterDTO productoFilter)
         {
