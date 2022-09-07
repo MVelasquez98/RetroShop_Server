@@ -131,6 +131,22 @@ namespace RetroShop_Client.Controllers
                 return StatusCode(500);
             }
         }
+
+        [HttpPost]
+        [Route("transaccion")]
+        public async Task<ActionResult> Get([FromBody] GetProductosRequest transaccion)
+        {
+            try
+            {
+                var response = await _service.getComprasOVentasByUsuarioRequestAsync(transaccion);
+                return Ok(response.Productos);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                return StatusCode(500);
+            }
+        }
         #endregion
     }
 }

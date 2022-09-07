@@ -8,6 +8,7 @@ service ProductoService {
     rpc getAllProductos(Empty) returns (ProductosDTO);
     rpc getAllProductosByUser(IdUsuarioDTO) returns (ProductosDTO);
     rpc getAllCategorias(Empty) returns (CategoriasDTO);
+    rpc getComprasOVentasByUsuarioRequest (GetProductosRequest) returns (ProductosDTO);
 }
 
 
@@ -18,7 +19,6 @@ message FotoDTO {
 	string nombre = 2;
 	string file = 3;
 }
-
 message ProductoDTO{
     int32 idProducto=1;
     string nombre =2;
@@ -51,6 +51,11 @@ message ProductoFilterDTO{
 	double precioHasta=4;
 	string fechaDesde=5;
 	string fechaHasta=6;
+}
+
+message GetProductosRequest{
+	int32 idUsuario = 1;
+	string tipoUsuario = 2;
 }
 
 
