@@ -5,6 +5,7 @@ option java_package = "grpc";
 /* METODOS PARA CONSUMIR */
 service UsuarioService{
 	rpc addUsuario (UsuarioDTO) returns (UsuarioObjDTO);
+	rpc getUsuario(GetUsuarioRequest)returns (UsuarioObjDTO);
 	rpc getByUsuarioYClaveRequest (GetByUsuarioYClaveRequest) returns (UsuarioObjDTO);
 	rpc updateUsuarioCargaSaldoRequest (UpdateUsuarioCargaSaldoRequest) returns (UsuarioObjDTO);
 	rpc updateUsuarioCompraProductoRequest (UpdateUsuarioCompraProductoRequest) returns (UsuarioObjDTO);
@@ -23,14 +24,16 @@ message UsuarioDTO{
 }
 
 /* REQUEST */
-
-
+message GetUsuarioRequest{
+	int32 idUsuario=1;
+}
 
 /* RECIBE PEDIDO DE USUARIO CON NOMBRE DE USUARIO Y CLAVE */
 message GetByUsuarioYClaveRequest{
 	string usuario = 1;
 	string clave = 2;
 }
+/* RECIBE USUARIOID  */
 
 /* RECIBE PEDIDO DE USUARIO CON SALDO ACTUALIZO POR CARGA DE SALDO*/
 message UpdateUsuarioCargaSaldoRequest{

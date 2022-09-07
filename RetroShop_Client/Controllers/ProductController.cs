@@ -1,14 +1,18 @@
 ﻿using Grpc.Net.Client;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
+using RetroShop_Client.Model;
 using RetroShop_Client.Model.Config;
 using System;
 using System.Diagnostics.Eventing.Reader;
+using System.Web.Http.Cors;
 
 namespace RetroShop_Client.Controllers
 {
     [Route("api/producto")]
     [ApiController]
+    [EnableCors(origins: "*", headers: "*", methods: "*")]
+
     public class ProductController : ControllerBase
     {
         #region fields
@@ -29,11 +33,28 @@ namespace RetroShop_Client.Controllers
         #region endpoints
         // POST api/<ProductController>
         [HttpPost]
-        public async Task<ActionResult> Post([FromBody] ProductoDTO producto)
+        public async Task<ActionResult> Post([FromBody] Producto producto)
         {
             try
             {
-                var response = await _service.addProductoAsync(producto);
+                ProductoDTO productoDTO = new ProductoDTO()
+                {
+                    IdProducto = producto.idProducto,
+                    Nombre = producto.nombre,
+                    Descripcion = producto.descripcion,
+                    Precio = producto.precio,
+                    CantidadDisponible = producto.cantidadDisponible,
+                    FechaFabricacion = producto.fechaFabricacion,
+                    IdCategoria = producto.idCategoria,
+                    IdUsuario = producto.idUsuario
+                };
+                foreach (var foto in producto.fotos)
+                {
+                    FotoDTO fotoDTO = new FotoDTO() { Nombre = foto.nombre, File = foto.file, IdFoto = foto.idFoto };
+                    productoDTO.Fotos.Add(fotoDTO);
+                }
+
+                var response = await _service.addProductoAsync(productoDTO);
                 return Ok(response.Producto);
             }
             catch (Exception ex)
@@ -77,11 +98,12 @@ namespace RetroShop_Client.Controllers
         }
         [HttpGet]
         [Route("byUser")]
-        public async Task<ActionResult> GetByUsuario(IdUsuarioDTO idUsuario)
+        public async Task<ActionResult> GetByUsuario(int idUsuario)
         {
             try
             {
-                var response = await _service.getAllProductosByUserAsync(idUsuario);
+                IdUsuarioDTO idUsuarioDTO = new IdUsuarioDTO() { IdUsuario = idUsuario };
+                var response = await _service.getAllProductosByUserAsync(idUsuarioDTO);
                 if (response.Productos.Count == 0) return NoContent();
                 return Ok(response.Productos);
             }

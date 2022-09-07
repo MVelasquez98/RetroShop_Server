@@ -2,11 +2,14 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using RetroShop_Client.Model.Config;
+using System.Web.Http.Cors;
 
 namespace RetroShop_Client.Controllers
 {
     [Route("api/usuario")]
     [ApiController]
+    [EnableCors(origins: "http://localhost:3000/", headers: "*", methods: "*")]
+
     public class UserController : ControllerBase
     {
         #region fields
@@ -18,12 +21,28 @@ namespace RetroShop_Client.Controllers
         public UserController(IOptions<ApiConfig> config)
         {
             _config = config;
+            AppContext.SetSwitch("System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport", true);
             GrpcChannel channel = GrpcChannel.ForAddress(_config.Value.GrpcChannelURLUsuario);
             _service = new UsuarioService.UsuarioServiceClient(channel);
         }
         #endregion
 
         #region endpoints
+        [HttpGet]
+        public async Task<ActionResult> Get(int idUsuario)
+        {
+            try
+            {
+                GetUsuarioRequest idUsuarioDTO = new GetUsuarioRequest() { IdUsuario = idUsuario };
+                var response = await _service.getUsuarioAsync(idUsuarioDTO);
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                return StatusCode(500);
+            }
+        }
         // POST api/<UserController>
         [HttpPost]
         public async Task<ActionResult> Post([FromBody] UsuarioDTO usuario)
@@ -39,7 +58,6 @@ namespace RetroShop_Client.Controllers
                 return StatusCode(500);
             }
         }
-        //GET
         [HttpPost]
         [Route("login")]
         public async Task<ActionResult> Login([FromBody] GetByUsuarioYClaveRequest usuarioLogin)
@@ -50,7 +68,7 @@ namespace RetroShop_Client.Controllers
                 if (response.Usuario == null) return NotFound();
                 return Ok(response.Usuario);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Console.WriteLine(ex.ToString());
                 return StatusCode(500);

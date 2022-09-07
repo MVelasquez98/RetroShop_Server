@@ -43,7 +43,7 @@ namespace RetroShop_Client.Controllers
         }
 
         // GET api/<WalletController>
-        [HttpGet]
+        [HttpPost]
         [Route("transaccion")]
         public async Task<ActionResult> Get([FromBody] GetTransaccionesRequest transaccion)
         {
