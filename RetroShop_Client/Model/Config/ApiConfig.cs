@@ -2,8 +2,7 @@
 {
     public class ApiConfig
     {
-        public string GrpcChannelURLProducto { get; set; }
-        public string GrpcChannelURLUsuario { get; set; }
-        public string GrpcChannelURLTransaccion { get; set; }
+        public string GrpcChannelURL { get; set; }
+        
     }
 }

@@ -13,5 +13,8 @@ namespace RetroShop_Client.Model
         public Foto[] fotos { get; set; }
         public int idCategoria { get; set; }
         public int idUsuario { get; set; }
+        public double precioBase { get; set; }
+        public bool esSubasta { get; set; }
+        public string fechaLimite { get; set; }
     }
 }
