@@ -35,12 +35,13 @@ namespace RetroShop_Client.Controllers
             {
                 GetUsuarioRequest idUsuarioDTO = new GetUsuarioRequest() { IdUsuario = idUsuario };
                 var response = await _service.getUsuarioAsync(idUsuarioDTO);
+                if (response.ServerResponse.Code == 500) throw new Exception(response.ServerResponse.Msg);
                 return Ok(response);
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.ToString());
-                return StatusCode(500);
+                Console.WriteLine(ex.Message.ToString());
+                return StatusCode(500, ex.Message);
             }
         }
         // POST api/<UserController>
@@ -50,12 +51,13 @@ namespace RetroShop_Client.Controllers
             try
             {
                 var response = await _service.addUsuarioAsync(usuario);
+                if (response.ServerResponse.Code == 500) throw new Exception(response.ServerResponse.Msg);
                 return Ok(response);
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.ToString());
-                return StatusCode(500);
+                Console.WriteLine(ex.Message.ToString());
+                return StatusCode(500, ex.Message);
             }
         }
         [HttpPost]
@@ -66,12 +68,13 @@ namespace RetroShop_Client.Controllers
             {
                 var response = await _service.getByUsuarioYClaveRequestAsync(usuarioLogin);
                 if (response.Usuario == null) return NotFound();
+                if (response.ServerResponse.Code == 500) throw new Exception(response.ServerResponse.Msg);
                 return Ok(response.Usuario);
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.ToString());
-                return StatusCode(500);
+                Console.WriteLine(ex.Message.ToString());
+                return StatusCode(500, ex.Message);
             }
         }
         // PUT api/<UserController>
@@ -82,12 +85,13 @@ namespace RetroShop_Client.Controllers
             try
             {
                 var response = await _service.updateUsuarioCargaSaldoRequestAsync(usuario);
+                if (response.ServerResponse.Code == 500) throw new Exception(response.ServerResponse.Msg);
                 return Ok(response.Usuario);
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.ToString());
-                return StatusCode(500);
+                Console.WriteLine(ex.Message.ToString());
+                return StatusCode(500, ex.Message);
             }
         }
 
@@ -99,12 +103,13 @@ namespace RetroShop_Client.Controllers
             try
             {
                 var response = await _service.updateUsuarioCompraProductoRequestAsync(usuario);
+                if (response.ServerResponse.Code == 500) throw new Exception(response.ServerResponse.Msg);
                 return Ok(response.Usuario);
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.ToString());
-                return StatusCode(500);
+                Console.WriteLine(ex.Message.ToString());
+                return StatusCode(500, ex.Message);
             }
         }
         #endregion

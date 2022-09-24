@@ -58,12 +58,13 @@ namespace RetroShop_Client.Controllers
                 }
 
                 var response = await _service.addProductoAsync(productoDTO);
+                if (response.ServerResponse.Cod == 500) throw new Exception(response.ServerResponse.Msg);
                 return Ok(response.Producto);
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.ToString());
-                return StatusCode(500);
+                Console.WriteLine(ex.Message.ToString());
+                return StatusCode(500, ex.Message);
             }
         }
 
@@ -76,12 +77,13 @@ namespace RetroShop_Client.Controllers
             {
                 var response = await _service.getByFilterAsync(productoFilter);
                 if (response.Productos.Count == 0) return NoContent();
+                if (response.ServerResponse.Cod == 500) throw new Exception(response.ServerResponse.Msg);
                 return Ok(response.Productos);
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.ToString());
-                return StatusCode(500);
+                Console.WriteLine(ex.Message.ToString());
+                return StatusCode(500, ex.Message);
             }
         }
         [HttpPut]
@@ -110,12 +112,13 @@ namespace RetroShop_Client.Controllers
                 }
 
                 var response = await _service.addProductoAsync(productoDTO);
+                if (response.ServerResponse.Cod == 500) throw new Exception(response.ServerResponse.Msg);
                 return Ok(response.Producto);
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.ToString());
-                return StatusCode(500);
+                Console.WriteLine(ex.Message.ToString());
+                return StatusCode(500, ex.Message);
             }
         }
         [HttpGet]
@@ -125,12 +128,13 @@ namespace RetroShop_Client.Controllers
             {
                 var response = await _service.getAllProductosAsync(new Empty());//ese empty rari
                 if (response.Productos.Count == 0) return NoContent();
+                if (response.ServerResponse.Cod == 500) throw new Exception(response.ServerResponse.Msg);
                 return Ok(response.Productos);
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.ToString());
-                return StatusCode(500);
+                Console.WriteLine(ex.Message.ToString());
+                return StatusCode(500, ex.Message);
             }
         }
         [HttpGet]
@@ -142,12 +146,13 @@ namespace RetroShop_Client.Controllers
                 IdUsuarioDTO idUsuarioDTO = new IdUsuarioDTO() { IdUsuario = idUsuario };
                 var response = await _service.getAllProductosByUserAsync(idUsuarioDTO);
                 if (response.Productos.Count == 0) return NoContent();
+                if (response.ServerResponse.Cod == 500) throw new Exception(response.ServerResponse.Msg);
                 return Ok(response.Productos);
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.ToString());
-                return StatusCode(500);
+                Console.WriteLine(ex.Message.ToString());
+                return StatusCode(500, ex.Message);
             }
         }
 
@@ -160,12 +165,13 @@ namespace RetroShop_Client.Controllers
             {
                 var response = await _service.getAllCategoriasAsync(new Empty());//ese empty rari
                 if (response.Categorias.Count == 0) return NoContent();
+                if (response.ServerResponse.Cod == 500) throw new Exception(response.ServerResponse.Msg);
                 return Ok(response.Categorias);
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.ToString());
-                return StatusCode(500);
+                Console.WriteLine(ex.Message.ToString());
+                return StatusCode(500, ex.Message);
             }
         }
 
@@ -176,12 +182,13 @@ namespace RetroShop_Client.Controllers
             try
             {
                 var response = await _service.getComprasOVentasByUsuarioRequestAsync(transaccion);
+                if (response.ServerResponse.Cod == 500) throw new Exception(response.ServerResponse.Msg);
                 return Ok(response.Productos);
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.ToString());
-                return StatusCode(500);
+                Console.WriteLine(ex.Message.ToString());
+                return StatusCode(500, ex.Message);
             }
         }
         #endregion

@@ -33,12 +33,13 @@ namespace RetroShop_Client.Controllers
             try
             {
                 var response = await _service.addTransaccionAsync(transaccion);
+                if (response.ServerResponse.Cod == 500) throw new Exception(response.ServerResponse.Msg);
                 return Ok(response);
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.ToString());
-                return StatusCode(500);
+                Console.WriteLine(ex.Message.ToString());
+                return StatusCode(500, ex.Message);
             }
         }
 
@@ -50,12 +51,13 @@ namespace RetroShop_Client.Controllers
             try
             {
                 var response = await _service.getComprasOVentasByUsuarioRequestAsync(transaccion);
+                if (response.ServerResponse.Cod == 500) throw new Exception(response.ServerResponse.Msg);
                 return Ok(response.Transacciones);
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.ToString());
-                return StatusCode(500);
+                Console.WriteLine(ex.Message.ToString());
+                return StatusCode(500, ex.Message);
             }
         }
         #endregion
