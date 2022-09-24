@@ -11,31 +11,32 @@ service ProductoService {
     rpc getComprasOVentasByUsuarioRequest (GetProductosRequest) returns (ProductosDTO);
 }
 
-
-
-/* MAPEO DE ENTIDADES*/
+/* MODEL */
 message FotoDTO {
     int32 idFoto = 1;
 	string nombre = 2;
 	string file = 3;
 }
+
 message ProductoDTO{
-    int32 idProducto=1;
-    string nombre =2;
-    string descripcion =3;
-    double precio=4;
-    int32 cantidadDisponible=5;
-    string fechaFabricacion=6;
-	repeated FotoDTO fotos =7;
+    int32 idProducto = 1;
+    string nombre = 2;
+    string descripcion = 3;
+    double precio = 4;
+    int32 cantidadDisponible = 5;
+    string fechaFabricacion = 6;
+	repeated FotoDTO fotos = 7;
 	int32 idCategoria = 8;
 	int32 idUsuario = 9;
+	double precioBase = 10;
+	bool esSubasta = 11;
+	string fechaLimite = 12;
 }
+
 message CategoriaDTO{
     int32 idCategoria=1;
 	string categoria=2;
 }
-
-
 
 /* REQUESTS*/
 message Empty {
@@ -44,6 +45,7 @@ message Empty {
 message IdUsuarioDTO{
     int32 idUsuario = 1;
 }
+
 message ProductoFilterDTO{
     int32 categoria=1;
 	string nombreLike=2;
@@ -58,21 +60,22 @@ message GetProductosRequest{
 	string tipoUsuario = 2;
 }
 
-
-
-/* REPONSES*/
+/* REPONSES */
 message ProductoServerResponse{
     int32 cod=1;
     string msg=2;
 }
+
 message ResProductoDTO{
     ProductoDTO producto = 1;
     ProductoServerResponse serverResponse = 2;
 }
+
 message ProductosDTO{
     repeated ProductoDTO productos=1;
     ProductoServerResponse serverResponse = 2;
 }
+
 message CategoriasDTO{
     repeated CategoriaDTO categorias=1;
     ProductoServerResponse serverResponse = 2;

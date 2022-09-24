@@ -11,7 +11,7 @@ service UsuarioService{
 	rpc updateUsuarioCompraProductoRequest (UpdateUsuarioCompraProductoRequest) returns (UsuarioObjDTO);
 }
 
-/* MODELO */
+/* MODEL */
 message UsuarioDTO{
 	int32 idUsuario = 1;
 	string nombre = 2;
@@ -21,6 +21,7 @@ message UsuarioDTO{
 	string usuario = 6;
 	string clave = 7;
 	double saldoBilletera = 8;
+	int32 idTipoUsuario = 9;
 }
 
 /* REQUEST */
@@ -33,7 +34,6 @@ message GetByUsuarioYClaveRequest{
 	string usuario = 1;
 	string clave = 2;
 }
-/* RECIBE USUARIOID  */
 
 /* RECIBE PEDIDO DE USUARIO CON SALDO ACTUALIZO POR CARGA DE SALDO*/
 message UpdateUsuarioCargaSaldoRequest{
@@ -46,7 +46,6 @@ message UpdateUsuarioCompraProductoRequest{
 	int32 idUsuario = 1;
 	int32 idProducto = 2;
 }
-
 
 /* RESPUESTA */
 message UsuarioServerResponse{
